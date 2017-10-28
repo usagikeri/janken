@@ -18,6 +18,8 @@ class Player:
 
     name = ""
 
+    now_hand = "0"
+
     win = 0
     lose = 0
     draw = 0
@@ -50,18 +52,55 @@ class Player:
     """
     def show_hand(self):
         r = random.choice("012")
-
+        self.now_hand = r
         return self.hands[r]
 
-    class Judge:
-        def __init__(self):
-            pass
+
+class Judge:
+    """
+    勝敗判定をするためのクラス
+    １対１のじゃんけんバトルだけではなく，複数人にも対応したい．
+    処理としてはインスタンスを引数にとり，クラス変数の勝敗の変数を加算することを想定している．
+    引数は可変長?
+
+    全員が同じ手，もしくは三種類の手ならばすべてのインスタンスのdrawフィールドに+1
+    二種類の場合，勝ちの手をだしたインスタンスのwinフィールドに+1，
+    負けの手を出したインスタンスのloseフィールドに+1
+    set()を使った重複の削除によって実装する予定
+    """
+    def __init__(self):
+        pass
+
+    """
+    hand_listを使って勝敗を判断し，それをplayer_listのフィールドに加算する．
+    """
+    def judge(self,player_list,hand_list):
+        #judge_list = list(set(hand_list))
+        player_list[0].name = "fjsla;j"
+        """
+        if len(judge_list) == 1 or len(judge_list) == 3:
+            #全部にdrawを追加する処理
+            map(lambda x: x.draw + 1,hand_list)
+
+        elif
+        """
+
+
 
 if __name__ == '__main__':
-    p1 = Player("A")
-    p2 = Player("B")
-    p3 = Player()
+    x = 2
+    y = []
+    J = Judge()
 
-    print(p1.name)
-    print(p2.name)
-    print(p3.name)
+    for i in range(x):
+        y.append(Player("Player{}".format(i+1)))
+
+
+    for i in range(3):
+        [y[j].show_hand() for j in range(len(y))]
+
+    [print(y[k].now_hand) for k in range(len(y))]
+
+    J.judge(y,"aaa")
+
+    print(y[0].name)
