@@ -1,6 +1,7 @@
-import random #使用するモジュールのimport
+import random
+import os
 
-# クラス名の宣言
+
 class Player:
     """
     プレイヤーに関係するクラス
@@ -96,15 +97,33 @@ class Judge:
         judge_list = list(set(hand_list))
 
         """
-        judge_listの要素数が1もしくは3．つまり全員が同じ手を出してもしくは，全員が違う手を出した場合に，全Playerのdraw変数に1を加算する．
+        勝敗を判定し，結果をPlayerのwin，lose，drawのいずれかに変数に加算する．
         そしてhistoryには，出した手と，勝敗結果を記録する．
+
+        if len(judge_list) == 1 or len(judge_list) == 3:
+            judge_listの要素数が1もしくは3．つまり全員が同じ手を出してもしくは，全員が違う手を出した場合に，全Playerのdraw変数に1を加算する．
+
+        elif judge_list[0] == 0 and (judge_list[0] - judge_list[1]) == -1:
+            judge_listはソートされているため，drawでない場合はリストの0番目には0か1がはいる．
+            今回はリストの0番目が0（グー）かつ 0引く1（チョキ ）または2（パー）の結果で条件分岐している．
+            -1なら0-1（グー vs チョキ）なのでチョキを出したプレイヤーの勝ち．
+            チョキを出したPlayerのwin変数に1を加算し，
+            グーを出したPlayerのlose変数に1を加算する．
+
+        elif judge_list[0] == 1 and (judge_list[0] - judge_list[1]) == -1:
+            1-2（チョキ vs パー）のパターン
+            チョキを出したPlayerのwin変数に1を加算し，
+            パーを出したPlayerのlose変数に1を加算する．
+
+        elif (judge_list[0] - judge_list[1]) == -2:
+            0-2（グー vs パー）のパターン
+            パーを出したPlayerのwin変数に1を加算し，
+            グーを出したPlayerのlose変数に1を加算する．
         """
         if len(judge_list) == 1 or len(judge_list) == 3:
-            #全部にdrawを追加する処理
             for player in player_list:
                 player.draw += 1
                 player.history.append("{0}:draw".format(self.hands[judge_list[0]]))
-
 
         elif judge_list[0] == 0 and (judge_list[0] - judge_list[1]) == -1:
             for player in player_list:
@@ -133,25 +152,49 @@ class Judge:
                     player.win += 1
                     player.history.append("{0}:win".format(self.hands[2]))
 
+    """
+    勝敗結果を出力する関数．
+    e.g.)|Player1|1勝|2敗|0分|
+         |Player2|1勝|2敗|0分|
+         |Player3|3勝|0敗|0分|
+    """
     def print_score(self,player_list):
         for player in player_list:
             print("|{0}|{1}勝|{2}敗|{3}分|".format(player.name,player.win,player.lose,player.draw))
 
+    """
+    どんな手を出して，どのような結果になったのかを出力する関数．
+    e.g.)|Player1|グー:lose|パー:win|パー:win|
+         |Player2|パー:win|グー:lose|グー:lose|
+         |Player3|パー:win|グー:lose|パー:win|
+    """
     def print_history(self,player_list):
         for player in player_list:
             print("|{0}|{1}|".format(player.name,"|".join(player.history)))
 
-def create_player(num):
-    player_list = []
-    for i in range(num):
-        player_list.append(Player("Player{0}".format(i+1)))
 
-    return player_list
 
 if __name__ == '__main__':
+    """
+    Playerを生成する関数．
+    生成してい人数を引数にとり，インスタンスをまとめたリストを返す．
+    """
+    def create_player(num):
+        player_list = []
+        for i in range(num):
+            player_list.append(Player("Player{0}".format(i+1)))
+
+        return player_list
+
     Players = create_player(3)
+    """
+    Judgeを行うJudgemanを生成
+    """
     Judgeman = Judge()
 
+    """
+    対戦回数を指定する．
+    """
     for i in range(3):
         for player in Players:
             player.show_hand()
