@@ -133,15 +133,6 @@ class Judge:
                     player.win += 1
                     player.history.append("{0}:win".format(self.hands[2]))
 
-        elif (judge_list[0] - judge_list[1]) == 1:
-            for player in player_list:
-                if player.now_hand == 1:
-                    player.win += 1
-                    player.history.append("{0}:win".format(self.hands[1]))
-                elif player.now_hand == 2:
-                    player.lose += 1
-                    player.history.append("{0}:lose".format(self.hands[2]))
-
     def print_score(self,player_list):
         for player in player_list:
             print("|{0}|{1}勝|{2}敗|{3}分|".format(player.name,player.win,player.lose,player.draw))
