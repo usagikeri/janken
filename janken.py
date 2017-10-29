@@ -1,5 +1,5 @@
 import random
-import os
+import sys
 
 
 class Player:
@@ -186,19 +186,25 @@ if __name__ == '__main__':
 
         return player_list
 
-    Players = create_player(3)
+    args = list(map(lambda x:int(x),sys.argv[1:]))
+
+    Players = create_player(args[0])
     """
     Judgeを行うJudgemanを生成
     """
     Judgeman = Judge()
 
     """
-    対戦回数を指定する．
+    対戦と判定を実行
     """
-    for i in range(3):
+    for i in range(args[1]):
         for player in Players:
             player.show_hand()
 
         Judgeman.judge(Players)
+
+    """
+    勝敗とhistoryを出力
+    """
     Judgeman.print_score(Players)
     Judgeman.print_history(Players)
