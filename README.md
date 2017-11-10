@@ -8,7 +8,7 @@ This program supports multiple players.
 1. clone this repository
 2. python janken [Players] [Games]
     * arg1 -> Players
-    * arg2 -> Gages
+    * arg2 -> Games
 
 e.g.)
 ```
