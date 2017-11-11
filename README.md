@@ -1,4 +1,7 @@
-# OverView
+# Janken Program
+
+---
+
 Janken program (Rock-paper-scissor program)
 
 # Description
